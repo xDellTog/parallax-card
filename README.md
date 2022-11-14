@@ -3,10 +3,11 @@
 ## Scripts
 
 ### dev
+
+Run application in development mode
+
 `yarn dev`
 
+Build application in production mode
 ### build
 `yarn build`
-
-### deploy
-`$ git subtree push --prefix dist origin gh-pages`
