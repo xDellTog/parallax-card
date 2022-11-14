@@ -2,6 +2,7 @@ import './App.css'
 import './Card.css'
 import cardImage from '../assets/card.jpg';
 import { useEffect } from 'react';
+// import * as useGyroscope from 'react-hook-gyroscope';
 
 type OnMouseMoveParams = {
   x: number;
@@ -9,13 +10,42 @@ type OnMouseMoveParams = {
 };
 
 function App() {
+  // const gyroscope = useGyroscope({
+  //   frequency: 60,
+  // });
+
   useEffect(() => {
+    console.log(window);
+
+    const Gyroscope: any = window.Gyroscope;
+
+    console.log(Gyroscope);
+
+    let gyroscope = new Gyroscope({ frequency: 60 });
+
+    gyroscope.addEventListener('reading', (e: any) => {
+      console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
+      console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
+      console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
+    });
+    gyroscope.start();
+
     document.body.addEventListener('pointermove', onMouseMove);
+    // document.body.addEventListener('devicemotion', onDeciveMove);
 
     return () => {
       document.body.removeEventListener('pointermove', onMouseMove);
+      // document.body.removeEventListener('devicemotion', onDeciveMove);
     }
   }, []);
+
+  // useEffect(() => {
+  //   console.log(gyroscope);
+  // }, [gyroscope]);
+
+  // function onDeciveMove(data: any) {
+  //   console.log(data);
+  // }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
     const cardEl: any = document.querySelector('.card');
