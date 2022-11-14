@@ -10,16 +10,10 @@ type OnMouseMoveParams = {
 };
 
 function App() {
-  // const gyroscope = useGyroscope({
-  //   frequency: 60,
-  // });
-
   useEffect(() => {
     const Gyroscope: any = window.Gyroscope;
 
     let gyroscope = new Gyroscope({ frequency: 60 });
-
-    console.log('gyroscope', gyroscope);
 
     gyroscope.addEventListener('reading', onDeviceMove);
     gyroscope.start();
@@ -32,15 +26,19 @@ function App() {
       gyroscope = null;
 
       document.body.removeEventListener('pointermove', onMouseMove);
-      // document.body.removeEventListener('devicemotion', onDeciveMove);
     }
   }, []);
 
   function onDeviceMove(e: any) {
-    console.log(e);
-    console.log(`Angular velocity along the X-axis ${e.x}`);
-    console.log(`Angular velocity along the Y-axis ${e.y}`);
-    console.log(`Angular velocity along the Z-axis ${e.z}`);
+    const gyro = e.target;
+    console.log(gyro);
+    console.log(`Angular velocity along the X-axis ${gyro.x}`);
+    console.log(`Angular velocity along the Y-axis ${gyro.y}`);
+    console.log(`Angular velocity along the Z-axis ${gyro.z}`);
+    onMouseMove({
+      x: gyro.x,
+      y: gyro.y,
+    });
   }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
