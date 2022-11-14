@@ -15,37 +15,33 @@ function App() {
   // });
 
   useEffect(() => {
-    console.log(window);
-
     const Gyroscope: any = window.Gyroscope;
-
-    console.log(Gyroscope);
 
     let gyroscope = new Gyroscope({ frequency: 60 });
 
-    gyroscope.addEventListener('reading', (e: any) => {
-      console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
-      console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
-      console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
-    });
+    console.log('gyroscope', gyroscope);
+
+    gyroscope.addEventListener('reading', onDeviceMove);
     gyroscope.start();
 
     document.body.addEventListener('pointermove', onMouseMove);
-    // document.body.addEventListener('devicemotion', onDeciveMove);
 
     return () => {
+      gyroscope.removeEventListener('reading', onDeviceMove);
+      gyroscope.stop();
+      gyroscope = null;
+
       document.body.removeEventListener('pointermove', onMouseMove);
       // document.body.removeEventListener('devicemotion', onDeciveMove);
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log(gyroscope);
-  // }, [gyroscope]);
-
-  // function onDeciveMove(data: any) {
-  //   console.log(data);
-  // }
+  function onDeviceMove(e: any) {
+    console.log(e);
+    console.log(`Angular velocity along the X-axis ${e.x}`);
+    console.log(`Angular velocity along the Y-axis ${e.y}`);
+    console.log(`Angular velocity along the Z-axis ${e.z}`);
+  }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
     const cardEl: any = document.querySelector('.card');
