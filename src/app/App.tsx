@@ -32,13 +32,15 @@ function App() {
   function onDeviceMove(e: any) {
     const gyro = e.target;
     console.log(gyro);
-    console.log(`Angular velocity along the X-axis ${gyro.x}`);
-    console.log(`Angular velocity along the Y-axis ${gyro.y}`);
-    console.log(`Angular velocity along the Z-axis ${gyro.z}`);
-    onMouseMove({
-      x: gyro.x,
-      y: gyro.y,
-    });
+    const cardEl: any = document.querySelector('.card');
+
+    if (!cardEl) return;
+
+    const x = Math.round(gyro.x);
+    const y = Math.round(gyro.y);
+    
+    cardEl.childNodes[0].style.transition = "";
+    cardEl.childNodes[0].style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
   }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
