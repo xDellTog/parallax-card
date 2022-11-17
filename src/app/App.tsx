@@ -11,36 +11,40 @@ type OnMouseMoveParams = {
 
 function App() {
   useEffect(() => {
-    const Gyroscope: any = window.Gyroscope;
+    // const Gyroscope: any = window.Gyroscope;
 
-    let gyroscope = new Gyroscope({ frequency: 60 });
+    // let gyroscope = new Gyroscope({ frequency: 60 });
 
-    gyroscope.addEventListener('reading', onDeviceMove);
-    gyroscope.start();
+    // gyroscope.addEventListener('reading', onDeviceMove);
+    // gyroscope.start();
 
     document.body.addEventListener('pointermove', onMouseMove);
+    document.body.addEventListener('devicemotion', onDeviceMove);
 
     return () => {
-      gyroscope.removeEventListener('reading', onDeviceMove);
-      gyroscope.stop();
-      gyroscope = null;
+      // gyroscope.removeEventListener('reading', onDeviceMove);
+      // gyroscope.stop();
+      // gyroscope = null;
 
       document.body.removeEventListener('pointermove', onMouseMove);
+      document.body.removeEventListener('devicemotion', onDeviceMove);
     }
   }, []);
 
   function onDeviceMove(e: any) {
-    const gyro = e.target;
-    console.log(gyro);
-    const cardEl: any = document.querySelector('.card');
+    console.log(e);
 
-    if (!cardEl) return;
+    // const gyro = e.target;
+    // console.log(gyro);
+    // const cardEl: any = document.querySelector('.card');
 
-    const x = Math.round(gyro.x);
-    const y = Math.round(gyro.y);
+    // if (!cardEl) return;
 
-    cardEl.style.transition = "";
-    cardEl.style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
+    // const x = Math.round(gyro.x);
+    // const y = Math.round(gyro.y);
+
+    // cardEl.style.transition = "";
+    // cardEl.style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
   }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
@@ -53,7 +57,7 @@ function App() {
     const posY = y - cardBounds.y;
     const ratioX = posX / cardBounds.width;
     const ratioY = posY / cardBounds.height;
-    
+
     cardEl.style.transition = "";
     cardEl.style.transform = "perspective(400px) rotateX(" + ratioY + "deg) rotateY(" + (-ratioX) + "deg)";
   }

@@ -1,4 +1,4 @@
-img {
+/* img {
     translate: 0 0;
 }
 
@@ -40,4 +40,4 @@ img {
         calc(var(--ratio-x) * 10%) calc(var(--ratio-y) * 10%),
         calc(80% + (var(--ratio-x) * -50%)) calc(80% + (var(--ratio-y) * -50%));
     opacity: 1;
-}
+} */
