@@ -38,9 +38,9 @@ function App() {
 
     const x = Math.round(gyro.x);
     const y = Math.round(gyro.y);
-    
-    cardEl.childNodes[0].style.transition = "";
-    cardEl.childNodes[0].style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
+
+    cardEl.style.transition = "";
+    cardEl.style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
   }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
@@ -53,8 +53,9 @@ function App() {
     const posY = y - cardBounds.y;
     const ratioX = posX / cardBounds.width;
     const ratioY = posY / cardBounds.height;
-    cardEl.style.setProperty('--ratio-x', ratioX);
-    cardEl.style.setProperty('--ratio-y', ratioY);
+    
+    cardEl.style.transition = "";
+    cardEl.style.transform = "perspective(400px) rotateX(" + ratioY + "deg) rotateY(" + (-ratioX) + "deg)";
   }
 
   return (
