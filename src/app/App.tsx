@@ -11,23 +11,23 @@ type OnMouseMoveParams = {
 
 function App() {
   useEffect(() => {
-    // const Gyroscope: any = window.Gyroscope;
+    const Gyroscope: any = window.Gyroscope;
 
-    // let gyroscope = new Gyroscope({ frequency: 60 });
+    let gyroscope = new Gyroscope({ frequency: 60 });
 
-    // gyroscope.addEventListener('reading', onDeviceMove);
-    // gyroscope.start();
+    gyroscope.addEventListener('reading', onDeviceMove);
+    gyroscope.start();
 
     document.body.addEventListener('pointermove', onMouseMove);
-    document.body.addEventListener('devicemotion', onDeviceMove);
+    // document.body.addEventListener('devicemotion', onDeviceMove);
 
     return () => {
-      // gyroscope.removeEventListener('reading', onDeviceMove);
-      // gyroscope.stop();
-      // gyroscope = null;
+      gyroscope.removeEventListener('reading', onDeviceMove);
+      gyroscope.stop();
+      gyroscope = null;
 
       document.body.removeEventListener('pointermove', onMouseMove);
-      document.body.removeEventListener('devicemotion', onDeviceMove);
+      // document.body.removeEventListener('devicemotion', onDeviceMove);
     }
   }, []);
 
