@@ -3,6 +3,10 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 .App {
   display: flex;
   align-items: center;
@@ -10,4 +14,69 @@
   width: 100vw;
   height: 100vh;
   background: #333;
+}
+
+.card {
+  height: 400px;
+  width: 275px;
+  transition: all linear 300ms;
+  transform: perspective(400px) rotateX(calc(var(--ratio-y) * 2deg)) rotateY(calc(var(--ratio-x) * 2deg));
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  /* Safari */
+  backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at calc(var(--ratio-x) * 20%) calc(var(--ratio-y) * 20%), hsl(0 0% 100% / 0.5), transparent 50%);
+  background-repeat: no-repeat;
+  background-blend-mode: soft-light;
+  z-index: 2;
+}
+
+@media (min-width: 450px) {
+  .card:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at calc(var(--ratio-x) * 100%) calc(var(--ratio-y) * 100%), hsl(0 0% 100% / 0.5), transparent 50%);
+    background-repeat: no-repeat;
+    background-blend-mode: soft-light;
+    z-index: 2;
+  }
+}
+
+.card img {
+  border-radius: 8px;
+  object-fit: fill;
+  height: 100%;
+  width: 100%;
 }

@@ -2,6 +2,7 @@ export { };
 
 declare global {
     interface Window {
-        Gyroscope: any;
+        Gyroscope?: any;
+        Accelerometer?: any;
     }
 }

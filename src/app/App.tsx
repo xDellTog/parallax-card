@@ -1,8 +1,7 @@
 import './App.css'
-import './Card.css'
-import cardImage from '../assets/card.jpg';
-import { useEffect } from 'react';
-// import * as useGyroscope from 'react-hook-gyroscope';
+import cardImageFront from '../assets/card-front.jpg';
+import cardImageBack from '../assets/card-back.jpeg';
+import { useEffect, useState } from 'react';
 
 type OnMouseMoveParams = {
   x: number;
@@ -10,16 +9,17 @@ type OnMouseMoveParams = {
 };
 
 function App() {
-  useEffect(() => {
-    const Gyroscope: any = window.Gyroscope;
+  const [flipped, setFlipped] = useState(false);
 
-    let gyroscope = new Gyroscope({ frequency: 60 });
+  useEffect(() => {
+    const Accelerometer: any = window.Accelerometer;
+
+    let gyroscope = new Accelerometer({ frequency: 30 });
 
     gyroscope.addEventListener('reading', onDeviceMove);
     gyroscope.start();
 
     document.body.addEventListener('pointermove', onMouseMove);
-    // document.body.addEventListener('devicemotion', onDeviceMove);
 
     return () => {
       gyroscope.removeEventListener('reading', onDeviceMove);
@@ -27,24 +27,20 @@ function App() {
       gyroscope = null;
 
       document.body.removeEventListener('pointermove', onMouseMove);
-      // document.body.removeEventListener('devicemotion', onDeviceMove);
     }
   }, []);
 
   function onDeviceMove(e: any) {
-    console.log(e);
+    const gyro = e.target;
+    const cardEl: any = document.querySelector('.card');
 
-    // const gyro = e.target;
-    // console.log(gyro);
-    // const cardEl: any = document.querySelector('.card');
+    if (!cardEl) return;
 
-    // if (!cardEl) return;
+    const ratioX = gyro.x;
+    const ratioY = gyro.y;
 
-    // const x = Math.round(gyro.x);
-    // const y = Math.round(gyro.y);
-
-    // cardEl.style.transition = "";
-    // cardEl.style.transform = "perspective(400px) rotateX(" + y / 2 + "deg) rotateY(" + x / 2 + "deg)";
+    cardEl.style.setProperty('--ratio-x', ratioX);
+    cardEl.style.setProperty('--ratio-y', ratioY);
   }
 
   function onMouseMove({ x, y }: OnMouseMoveParams) {
@@ -57,15 +53,40 @@ function App() {
     const posY = y - cardBounds.y;
     const ratioX = posX / cardBounds.width;
     const ratioY = posY / cardBounds.height;
-
-    cardEl.style.transition = "";
-    cardEl.style.transform = "perspective(400px) rotateX(" + ratioY + "deg) rotateY(" + (-ratioX) + "deg)";
+    
+    cardEl.style.setProperty('--ratio-x', ratioX);
+    cardEl.style.setProperty('--ratio-y', ratioY);
   }
+
+  function flipCard() {
+    const cardEl: Element | null = document.querySelector('.card-inner');
+
+    if (!cardEl) return;
+
+    if (!flipped) {
+      cardEl.classList.add('flipped');
+    } else {
+      cardEl.classList.remove('flipped');
+    }
+  }
+
+  useEffect(() => {
+    flipCard();
+  }, [flipped]);
 
   return (
     <div className="App">
-      <div className="card">
-        <img src={cardImage} alt="YuGiOh! Card" />
+      <div className="card"
+        onClick={() => setFlipped(!flipped)}
+      >
+        <div className="card-inner">
+          <div className="card-front">
+            <img src={cardImageFront} alt="YuGiOh! Card Front" />
+          </div>
+          <div className="card-back">
+            <img src={cardImageBack} alt="YuGiOh! Card Back" />
+          </div>
+        </div>
       </div>
     </div>
   )
