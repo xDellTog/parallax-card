@@ -9,7 +9,7 @@ type OnMouseMoveParams = {
 };
 
 function App() {
-  const [flipped, setFlipped] = useState(false);
+  const [flipped, setFlipped] = useState(true);
 
   useEffect(() => {
     const Accelerometer: any = window.Accelerometer;
