@@ -12,19 +12,26 @@ function App() {
   const [flipped, setFlipped] = useState(true);
 
   useEffect(() => {
-    const Accelerometer: any = window.Accelerometer;
+    const browserName = getBrowserName();
 
-    let gyroscope = new Accelerometer({ frequency: 30 });
+    let gyroscope: any;
+    if (browserName != 'safari') {
+      const Accelerometer: any = window.Accelerometer;
 
-    gyroscope.addEventListener('reading', onDeviceMove);
-    gyroscope.start();
+      gyroscope = new Accelerometer({ frequency: 30 });
+
+      gyroscope.addEventListener('reading', onDeviceMove);
+      gyroscope.start();
+    }
 
     document.body.addEventListener('pointermove', onMouseMove);
 
     return () => {
-      gyroscope.removeEventListener('reading', onDeviceMove);
-      gyroscope.stop();
-      gyroscope = null;
+      if (browserName != 'safari') {
+        gyroscope.removeEventListener('reading', onDeviceMove);
+        gyroscope.stop();
+        gyroscope = null;
+      }
 
       document.body.removeEventListener('pointermove', onMouseMove);
     }
@@ -53,7 +60,7 @@ function App() {
     const posY = y - cardBounds.y;
     const ratioX = posX / cardBounds.width;
     const ratioY = posY / cardBounds.height;
-    
+
     cardEl.style.setProperty('--ratio-x', ratioX);
     cardEl.style.setProperty('--ratio-y', ratioY);
   }
@@ -68,6 +75,27 @@ function App() {
     } else {
       cardEl.classList.remove('flipped');
     }
+  }
+
+  function getBrowserName(): string {
+    let { userAgent } = navigator;
+    let browserName;
+
+    if (userAgent.match(/chrome|chromium|crios/i)) {
+      browserName = "chrome";
+    } else if (userAgent.match(/firefox|fxios/i)) {
+      browserName = "firefox";
+    } else if (userAgent.match(/safari/i)) {
+      browserName = "safari";
+    } else if (userAgent.match(/opr\//i)) {
+      browserName = "opera";
+    } else if (userAgent.match(/edg/i)) {
+      browserName = "edge";
+    } else {
+      browserName = "No browser detection";
+    }
+
+    return browserName;
   }
 
   useEffect(() => {
